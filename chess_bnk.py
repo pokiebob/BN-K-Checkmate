@@ -54,18 +54,20 @@ class ChessBNKGame(Game):
             board.set_piece_at(bk, chess.Piece(chess.KING, chess.BLACK))
             board.set_piece_at(wb, chess.Piece(chess.BISHOP, chess.WHITE))
             board.set_piece_at(wn, chess.Piece(chess.KNIGHT, chess.WHITE))
-            
-            if not board.is_valid():
-                continue
+            board.turn = chess.WHITE
+            board.castling_rights = 0
+            board.ep_square = None
+            board.halfmove_clock = 0
+            board.fullmove_number = 1
+
             if board.is_checkmate() or board.is_stalemate():
                 continue
-
-            board.turn = chess.WHITE
+            if not board.is_valid():
+                continue
             
             return board
 
-        print("Failed to generate a valid position.")
-        return None
+        raise RuntimeError("Failed to generate a valid position.")
 
     def initial_state(self):
         board = self._random_bnk_position()
