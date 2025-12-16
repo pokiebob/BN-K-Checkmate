@@ -1,0 +1,74 @@
+import chess
+from game import Game, State
+import random
+
+class ChessBNKState(State):
+    def __init__(self, board: chess.Board):
+        self.board = board
+
+    def is_terminal(self):
+        if self.board.is_checkmate() or self.board.is_stalemate():
+            return True
+        
+        if self.board.can_claim_fifty_moves() or self.board.is_fifty_moves():
+            return True
+        
+        if self.board.is_insufficient_material() or self.board.can_claim_threefold_repetition():
+            return True
+        
+        return False
+
+    def payoff(self):
+        if self.board.is_checkmate():
+            return 1.0 if self.board.turn == chess.BLACK else -1.0
+        
+        return 0.0
+
+    def actor(self):
+        return 0 if self.board.turn == chess.WHITE else 1
+
+    def get_actions(self):
+        return list(self.board.legal_moves)
+
+    def successor(self, action):
+        b2 = self.board.copy(stack=False)
+        b2.push(action)
+        return ChessBNKState(b2)
+
+class ChessBNKGame(Game):
+    def __init__(self, seed=None):
+        self.rng = random.Random(seed)
+
+    def _random_bnk_position(self):
+        for _ in range(1000):
+            board = chess.Board()
+            board.clear_board()
+            wk, bk, wb, wn = self.rng.sample(list(chess.SQUARES), 4)
+
+            # check if kings are adjacent
+            if chess.square_distance(wk, bk) <= 1:
+                continue
+
+            # place pieces
+            board.set_piece_at(wk, chess.Piece(chess.KING, chess.WHITE))
+            board.set_piece_at(bk, chess.Piece(chess.KING, chess.BLACK))
+            board.set_piece_at(wb, chess.Piece(chess.BISHOP, chess.WHITE))
+            board.set_piece_at(wn, chess.Piece(chess.KNIGHT, chess.WHITE))
+            
+            if not board.is_valid():
+                continue
+            if board.is_checkmate() or board.is_stalemate():
+                continue
+
+            board.turn = chess.WHITE
+            
+            return board
+
+        print("Failed to generate a valid position.")
+        return None
+
+    def initial_state(self):
+        board = self._random_bnk_position()
+        return ChessBNKState(board)
+
+    
