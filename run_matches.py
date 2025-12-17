@@ -2,6 +2,7 @@ import argparse
 
 from agents import random_policy
 from minimax import Heuristic, minimax_policy
+from alphabeta import alphabeta_policy
 from scoring import evaluate
 
 from play_game import play_game
@@ -14,6 +15,10 @@ def make_policy(policy: str, depth: int):
     if policy == "minimax":
         h = Heuristic(evaluate)
         return minimax_policy(depth, h), f"Minimax at depth={depth}"
+    
+    if policy == "alphabeta":
+        h = Heuristic(evaluate)
+        return alphabeta_policy(depth, h), f"AlphaBeta at depth={depth}"
 
     raise ValueError(f"Unknown policy: {policy}. Please select from: random, minimax")
 

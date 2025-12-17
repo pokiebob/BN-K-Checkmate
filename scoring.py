@@ -15,12 +15,9 @@ def manhattan_distance(sq1, sq2):
 
 def distance_to_target_corner(b_king, w_bishop):
     bishop_sq_color = square_color(w_bishop)
+    target_corners = [chess.A1, chess.H8] if bishop_sq_color == 0 else [chess.A8, chess.H1]
+    return min(chess.square_distance(b_king, corner) for corner in target_corners)
 
-    target_corners = [chess.A8, chess.H1] if bishop_sq_color == 0 else [chess.A1, chess.H8]
-
-    min_distance = min(manhattan_distance(b_king, corner) for corner in target_corners)
-
-    return min_distance
 
 def king_mobility(board, b_king):
     mobility = 0
@@ -54,8 +51,8 @@ def evaluate(pos):
     
     # HEURISTICS
 
-    # max manhattan distance is 14 (A1 to H8 or A8 to H1)
-    cornering_score = 1 - (distance_to_target_corner(b_king, w_bishop) / 14)
+    # max square distance is 7 (A1 to H8 or A8 to H1)
+    cornering_score = 1 - (distance_to_target_corner(b_king, w_bishop) / 7)
 
     # max manhattan distance between kings is also 14
     kings_distance_score = 1 - (manhattan_distance(w_king, b_king) / 14)
