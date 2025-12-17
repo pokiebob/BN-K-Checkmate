@@ -16,7 +16,7 @@ def play_game(
         print()
 
     move_count = 0
-    while not position.is_terminal() and move_count < max_moves:
+    while not position.is_terminal() and move_count <= max_moves:
         actor = position.actor()
         color = "White" if actor == 0 else "Black"
         if actor == 0:

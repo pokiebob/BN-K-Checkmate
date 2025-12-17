@@ -31,7 +31,7 @@ class ChessBNKState(State):
         return list(self.board.legal_moves)
 
     def successor(self, action):
-        b2 = self.board.copy(stack=False)
+        b2 = self.board.copy(stack=True)
         b2.push(action)
         return ChessBNKState(b2)
 
