@@ -208,12 +208,11 @@ def main():
     banner("ALPHABETA vs. RANDOM AGENT")
 
     run_section("random")
-    clear_screen()
     print("Greedy defender runs away from the two target corners and makes a draw when possible.")
     input("Press Enter to continue to the Greedy section.")
 
     run_section("greedy_defender")
-
+    input("Press enter to conclude this demo...")
     clear_screen()
     outro()
 
