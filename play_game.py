@@ -5,7 +5,8 @@ def play_game(
     p1,
     seed=0, 
     max_moves=100, 
-    vizualize=True
+    vizualize=True,
+    progress=None
 ):
     game = ChessBNKGame(seed=seed)
     position = game.initial_state()
@@ -29,6 +30,8 @@ def play_game(
 
         if vizualize:
             print(f"Move {move_count}: {color} played {move}")
+            if progress:
+                print(f"Wins: {progress[0]}/{progress[2]}, Draws: {progress[1]}/{progress[2]}")
             print(b)
             print()
         

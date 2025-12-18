@@ -3,8 +3,14 @@ from game import Game, State
 import random
 
 class ChessBNKState(State):
-    def __init__(self, board: chess.Board):
+    def __init__(self, board: chess.Board, history=None):
         self.board = board
+        if history is None:
+            self.history = {}
+            k = board._transposition_key()
+            self.history[k] = 1
+        else:
+            self.history = history
 
     def is_terminal(self):
         if self.board.is_checkmate() or self.board.is_stalemate():
@@ -33,7 +39,11 @@ class ChessBNKState(State):
     def successor(self, action):
         b2 = self.board.copy(stack=True)
         b2.push(action)
-        return ChessBNKState(b2)
+
+        k2 = b2._transposition_key()
+        history2 = self.history.copy()
+        history2[k2] = history2.get(k2, 0) + 1
+        return ChessBNKState(b2, history2)
 
 class ChessBNKGame(Game):
     def __init__(self, seed=None):
