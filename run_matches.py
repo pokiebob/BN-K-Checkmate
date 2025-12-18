@@ -4,7 +4,8 @@ import time
 from agents import random_policy, greedy_policy
 from minimax import Heuristic, minimax_policy
 from alphabeta import alphabeta_policy
-from scoring import evaluate, defender_eval
+from scoring import evaluate
+from defender_scoring import defender_eval
 
 from play_game import play_game
 
