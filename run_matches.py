@@ -1,18 +1,24 @@
 import argparse
 import time
 
-from agents import random_policy
+from agents import random_policy, greedy_policy
 from minimax import Heuristic, minimax_policy
 from alphabeta import alphabeta_policy
-from scoring import evaluate
+from scoring import evaluate, defender_eval
 
 from play_game import play_game
 
 
 def make_policy(policy: str, depth: int):
+
+    # BLACK POLICIES
     if policy == "random":
         return random_policy(), "Random"
+    
+    if policy == "greedy_defender":
+        return greedy_policy(defender_eval), "Greedy Defender"
 
+    # WHITE POLICIES
     if policy == "minimax":
         h = Heuristic(evaluate)
         return minimax_policy(depth, h), f"Minimax at depth={depth}"
