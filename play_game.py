@@ -24,6 +24,8 @@ def play_game(
             move = p0(position)
         else:
             move = p1(position)
+        if move is None:
+            raise RuntimeError(f"Policy returned None move")
         position = position.successor(move)
         b = position.board
         move_count += 1

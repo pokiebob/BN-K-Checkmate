@@ -18,8 +18,11 @@ class ChessBNKState(State):
         
         if self.board.can_claim_fifty_moves() or self.board.is_fifty_moves():
             return True
+
+        key = self.board._transposition_key()
+        count = self.history.get(key, 0)
         
-        if self.board.is_insufficient_material() or self.board.can_claim_threefold_repetition():
+        if self.board.is_insufficient_material() or count >= 3:
             return True
         
         return False

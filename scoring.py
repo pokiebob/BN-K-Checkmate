@@ -59,13 +59,21 @@ def evaluate(pos):
             return -1000.0
         return p * 1000.0
 
-    if board.can_claim_threefold_repetition():
-        return -1000.0
-    if board.can_claim_fifty_moves() or board.is_fifty_moves():
-        return -1000.0
-    if draw_risk(board):
-        return -1000.0
+    # if board.can_claim_threefold_repetition():
+    #     return -1000.0
+    # if board.can_claim_fifty_moves() or board.is_fifty_moves():
+    #     return -1000.0
+    # if draw_risk(board):
+    #     return -1000.0
 
+    key = board._transposition_key()
+    count = pos.history.get(key, 0)
+
+    if count == 3:
+        return -1000.0
+    if count == 2:
+        return -250.0
+    
     
     b_king = board.king(chess.BLACK)
     w_king = board.king(chess.WHITE)
@@ -76,12 +84,11 @@ def evaluate(pos):
     
     # HEURISTICS
 
-    ed = edge_distance(b_king)
-
     # max square distance is 7 (A1 to H8 or A8 to H1)
     cornering_score = 1 - (distance_to_target_corner(b_king, w_bishop) / 7)
 
     # max edge distance is 3 (D4 to A4 or D4 to D1)
+    ed = edge_distance(b_king)
     edge_score = 1 - (ed / 3)  
 
     # max square distance between kings is also 7
@@ -96,13 +103,13 @@ def evaluate(pos):
     urgency_penalty = board.halfmove_clock / 100.0
     # repetition_penalty = 1.0 if board.is_repetition(2) else 0.0
 
-    corner_weight = 0.30 if ed <= 1 else 0.20
+    corner_weight = 0.35 if ed <= 1 else 0.25
     edge_weight = 0.10 if ed <= 1 else 0.15
 
     score = (
         corner_weight * cornering_score + 
         edge_weight * edge_score +
-        0.30 * restrictiveness_score + 
+        0.25 * restrictiveness_score + 
         0.10 * coordination_score + 
         0.25 * kings_distance_score -
         .15 * urgency_penalty
