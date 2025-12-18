@@ -1,6 +1,6 @@
 # BN-K-Checkmate
 
-Analysis of effectiveness of alpha-beta pruning agent to solve the Bishop-Knight vs. King checkmate
+Analysis of effectiveness of alpha-beta pruning vs. minimax agent to solve the Bishop-Knight checkmate
 
 Chess BNK
 

@@ -14,7 +14,7 @@ def make_policy(policy: str, depth: int):
 
     # BLACK POLICIES
     if policy == "random":
-        return random_policy(), "Random"
+        return random_policy(), "Random Agent"
     
     if policy == "greedy_defender":
         return greedy_policy(defender_eval), "Greedy Defender"
@@ -28,7 +28,7 @@ def make_policy(policy: str, depth: int):
         h = Heuristic(evaluate)
         return alphabeta_policy(depth, h), f"AlphaBeta at depth={depth}"
 
-    raise ValueError(f"Unknown policy: {policy}. Please select from: random, minimax, alphabeta")
+    raise ValueError(f"Unknown policy: {policy}. Please select from: random, greedy_defender, minimax, alphabeta")
 
 
 def time_pretty(s: float):
