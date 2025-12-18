@@ -1,5 +1,4 @@
 import itertools as it
-import random
 import chess
 
 def square_color(sq):
@@ -38,16 +37,16 @@ def average_piece_distance(w_king, w_bishop, w_knight):
     dists = [manhattan_distance(sq1, sq2) for sq1, sq2 in it.combinations([w_king, w_bishop, w_knight], 2)]
     return sum(dists) / len(dists)
 
-def draw_risk(board):
-    for mv in board.legal_moves:
-        if board.is_capture(mv):
-            return True 
-        b2 = board.copy(stack=True)
-        b2.push(mv)
-        if b2.can_claim_draw():
-            return True
+# def draw_risk(board):
+#     for mv in board.legal_moves:
+#         if board.is_capture(mv):
+#             return True 
+#         b2 = board.copy(stack=True)
+#         b2.push(mv)
+#         if b2.can_claim_draw():
+#             return True
         
-    return False
+#     return False
 
 
 def evaluate(pos):

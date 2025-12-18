@@ -1,5 +1,3 @@
-from collections import defaultdict
-
 def alphabeta_policy(depth, h):
     def fxn(pos):
         value, move = alphabeta(pos, depth, h, -h.inf, h.inf)
